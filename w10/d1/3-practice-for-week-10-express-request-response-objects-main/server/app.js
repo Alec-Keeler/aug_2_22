@@ -4,6 +4,13 @@ const app = express();
 
 app.use(express.json());
 
+// 1. req.body
+// 2. route params: req.params, /users/:id
+// 3. query strings: req.query, /users?name=Alec
+
+
+
+
 /**
  *  Basic Phase 1 - Plain-text response
  *     Method: GET
@@ -11,6 +18,9 @@ app.use(express.json());
  *     Response: 1.0.0
  */
 // Your code here
+app.get('/version', (req, res) => {
+    res.send('1.0.0')
+})
 
 /**
  *  Basic Phase 2 - Route param and JSON response
@@ -24,6 +34,16 @@ app.use(express.json());
  *  combined with the id sent as a route parameter in the url
  */
 // Your code here
+app.get('/viewers/:banana', (req, res) => {
+    console.log(req)
+    res.json({
+        id: req.params.banana,
+        firstName: "Alec",
+        lastName: "Keeler",
+        birthDate: '9/15/19noneya',
+        faveMovies: ['The Prestige', 'A Knight\'s Tale']
+    })
+})
 
 /** Basic Phase 3 - Query params in URL
  *      Method: GET
@@ -43,6 +63,20 @@ app.use(express.json());
  *          message required
  */
 // Your code here
+
+// TypeError: Cannot read property &#39;message&#39; of undefined
+app.get('/info', (req, res) => {
+    console.log(req.query)
+    if (req.query.message) {
+        res.json({
+            message: req.query.message
+        })
+    } else {
+        res.json({
+            message: 'message required'
+        })
+    }
+})
 
 /**
  *  IMPORTANT: Scroll to the top for basic phases.
