@@ -26,7 +26,7 @@ app.get('/other-resource', (req, res, next) => {
 const fourth = (req, res, next) => {
   console.log('Fourth');
   const error = new Error('Fourth');
-  throw error;
+  // throw error;
 };
 
 // Fifth
