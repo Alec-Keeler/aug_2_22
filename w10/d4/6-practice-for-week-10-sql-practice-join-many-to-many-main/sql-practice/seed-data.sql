@@ -22,6 +22,15 @@ CREATE TABLE musician_instruments (
   FOREIGN KEY (instrument_id) REFERENCES instruments(id)
 );
 
+CREATE TABLE albums (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title VARCHAR(100) NOT NULL,
+  band_id INTEGER,
+  year INTEGER NOT NULL,
+  num_sold INTEGER NOT NULL DEFAULT 0,
+  FOREIGN KEY (band_id) REFERENCES bands(id) ON DELETE CASCADE
+);
+
 INSERT INTO musicians
 VALUES (1, 'Adam', 'Appleby'),
   (2, 'Anton', 'Martinovic'),
