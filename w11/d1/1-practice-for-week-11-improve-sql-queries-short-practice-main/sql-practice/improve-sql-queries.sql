@@ -7,8 +7,22 @@
 
 -- Paste your results below (as a comment):
 
+SELECT * FROM cats
+JOIN cat_toys ON cats.id = cat_toys.cat_id
+WHERE cat_toys.toy_id = 5;
 
+-- Run Time: real 0.008
 
+-- QUERY PLAN
+--SCAN TABLE cat_toys
+--SEARCH TABLE cats USING INTEGER PRIMARY KEY (rowid=?)
+
+CREATE INDEX idx_cat_toys_toy_id ON cat_toys(toy_id);
+
+QUERY PLAN
+-- |--SEARCH TABLE cat_toys USING INDEX idx_cat_toys_toy_id (toy_id=?)
+-- `--SEARCH TABLE cats USING INTEGER PRIMARY KEY (rowid=?)
+-- Run Time: real 0.001 user 0.000108 sys 0.000016
 
 ----------
 -- Step 1 - Analyze the Query
