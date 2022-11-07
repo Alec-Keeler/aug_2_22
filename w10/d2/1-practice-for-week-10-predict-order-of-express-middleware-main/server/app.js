@@ -3,7 +3,7 @@ const app = express();
 
 // First
 app.use('/', (req, res, next) => {
-  console.log('First');
+  console.log(req.url);
   const error = new Error('First');
   next(error);
 });

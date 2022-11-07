@@ -3,6 +3,7 @@ PRAGMA foreign_keys=on; -- Turns on foreign key support in SQLite3
 -- Create / re-create tables
 DROP TABLE IF EXISTS toys;
 DROP TABLE IF EXISTS cats;
+DROP TABLE IF EXISTS albums;
 
 CREATE TABLE cats (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -15,6 +16,13 @@ CREATE TABLE toys (
   name TEXT,
   cat_id INTEGER,
   FOREIGN KEY (cat_id) REFERENCES cats(id) ON DELETE CASCADE
+);
+
+CREATE TABLE albums (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name VARCHAR,
+  artist VARCHAR,
+  release_year INTEGER
 );
 
 -- Create/recreate BONUS tables
@@ -60,3 +68,14 @@ VALUES
   (5, 'Crinkle Ball'),
   (7, 'Cheetos'),
   (8, 'Yarn');
+
+INSERT INTO albums (name, artist, release_year)
+VALUES
+('1989', 'Taylor Swift', 2014),
+('Rebel Heart', 'Madonna', 2015),
+('Blackstar', 'David Bowie', 2016),
+('After Hours', 'The Weeknd', 2020),
+('Oceania', 'The Smashing Pumpkins', 2012),
+('Plastic Beach', 'Gorillaz', 2010),
+('It''s not you it''s me', 'Lily Allen', 2009),
+('Beautiful Trauma', 'Pink', 2017);
