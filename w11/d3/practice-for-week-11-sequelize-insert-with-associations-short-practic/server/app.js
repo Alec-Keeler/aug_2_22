@@ -16,12 +16,39 @@ app.use(express.json());
 // STEP 1: Creating from an associated model (One-to-Many)
 app.post('/bands/:bandId/musicians', async (req, res, next) => {
     // Your code here
+    const band = await Band.findByPk(req.params.bandId);
+    const { firstName, lastName } = req.body;
+    const newMusician = await band.createMusician({
+        firstName,
+        lastName
+    })
+    res.json({
+        message: `Created new musician for band ${band.name}`,
+        musician: newMusician
+    })
 })
 
 // STEP 2: Connecting two existing records (Many-to-Many)
 app.post('/musicians/:musicianId/instruments', async (req, res, next) => {
     // Your code here
+    const musicId = req.params.musicianId;
+    const musician = await Musician.findByPk(musicId);
+    if (req.body.instrumentIds) {
+        musician.addInstruments(req.body.instrumentIds) //can take array [3, 5]
+        //create two entries into the join table
+        //1. Adams id of 1 <-> 3
+        //2. Adams id of 1 < -> 5
+
+        res.json({
+            message: `Successfully added instruments with an id of
+            ${req.body.instrumentIds} to Musician, ${musician.firstName}
+            ${musician.lastName}`
+        })
+    } else {
+        res.json({ message: `Needs instrument ID's.` })
+    }
 })
+
 
 
 // Get the details of one band and associated musicians - DO NOT MODIFY
@@ -36,7 +63,7 @@ app.get('/bands/:bandId', async (req, res, next) => {
 // Get the details all bands and associated musicians - DO NOT MODIFY
 app.get('/bands', async (req, res, next) => {
     const payload = await Band.findAll({
-        include: {model: Musician}, 
+        include: { model: Musician },
         order: [['name'], [Musician, 'firstName']]
     });
     res.json(payload);
@@ -45,7 +72,7 @@ app.get('/bands', async (req, res, next) => {
 // Get the details of one musician and associated instruments - DO NOT MODIFY
 app.get('/musicians/:musicianId', async (req, res, next) => {
     const payload = await Musician.findByPk(req.params.musicianId, {
-        include: {model: Instrument},
+        include: { model: Instrument },
         order: [[Instrument, 'type']]
     });
     res.json(payload);
@@ -54,7 +81,7 @@ app.get('/musicians/:musicianId', async (req, res, next) => {
 // Get the details all musicians and associated instruments - DO NOT MODIFY
 app.get('/musicians', async (req, res, next) => {
     const payload = await Musician.findAll({
-        include: { model: Instrument }, 
+        include: { model: Instrument },
         order: [['firstName'], ['lastName'], [Instrument, 'type']]
     });
     res.json(payload);
@@ -68,5 +95,5 @@ app.get('/', (req, res) => {
 });
 
 // Set port and listen for incoming requests - DO NOT MODIFY
-const port = 5000;
+const port = 5001;
 app.listen(port, () => console.log('Server is listening on port', port));
