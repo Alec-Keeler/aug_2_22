@@ -57,6 +57,18 @@ app.get('/profile', (req, res) => {
 
 app.use(express.static(path.resolve('../frontend')));
 
+const { Tweet } = require('./db/models')
+app.post('/', async (req, res) => {
+  if (req.body.action === "delete") {
+    let tweets = await Tweet.findAll()
+    for (let i = 0; i < tweets.length; i++) {
+      const tweet = tweets[i];
+      await tweet.destroy()
+    }
+    res.send(':)')
+  }
+})
+
 /* ------------------------- API Endpoints -------------------------- */
 
 app.use('/api/users', usersRouter);
